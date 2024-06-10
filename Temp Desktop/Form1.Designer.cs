@@ -77,14 +77,14 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(234, 111);
+            ClientSize = new Size(244, 111);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(button2);
             Controls.Add(button1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
-            Text = "Temporary Desktop";
+            Text = "Temp Desktop";
             ResumeLayout(false);
             PerformLayout();
         }
