@@ -11,7 +11,7 @@ namespace Temp_Desktop
         static extern bool ExitWindowsEx(uint uFlags, uint dwReason);
 
         string desktop_shortcut_backup_dir = "C:\\Users\\Public\\Public_Desktop_Backup\\";
-        string desktop_shortcut_dir = "C:\\Users:\\Public\\Desktop";
+        string desktop_shortcut_dir = "C:\\Users\\Public\\Desktop";
         public Form1()
         {
 
