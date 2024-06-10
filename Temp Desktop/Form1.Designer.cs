@@ -63,7 +63,6 @@
             label1.Size = new Size(150, 15);
             label1.TabIndex = 2;
             label1.Text = "Current Desktop Directory: ";
-            label1.Click += label1_Click;
             // 
             // label2
             // 
@@ -73,7 +72,6 @@
             label2.Size = new Size(38, 15);
             label2.TabIndex = 3;
             label2.Text = "label2";
-            label2.Click += label2_Click;
             // 
             // Form1
             // 
