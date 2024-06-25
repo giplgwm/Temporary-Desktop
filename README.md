@@ -1,7 +1,9 @@
 # Temp Desktop
 This is a program for temporarily changing the folder that windows uses for the Desktop UI. I find this useful when working in a particular folder for long periods of time, where normally I would need to keep the File explorer open. 
 
-Temp Desktop works by simply editing the Registry key that sets your desktop folder and then copying all desktop shortcuts to a backup folder to hide them temporarily. 
+![Preview Image](temp_desktop_preview.png "Preview Image")
+
+It works by simply editing the Registry key that sets your desktop folder and then copying all desktop shortcuts to a backup folder to hide them temporarily. 
 
 ## Usage
 1. Install [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
