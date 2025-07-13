@@ -19,13 +19,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>embedded</DebugType>
   </PropertyGroup>
+	
 
   <ItemGroup>
     <None Remove="desktop_folder.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="desktop_folder.ico" />
+    <Content Include="desktop_folder.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
