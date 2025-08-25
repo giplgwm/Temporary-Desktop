@@ -11,7 +11,7 @@ It lives in the system tray and works by simply editing the Registry key that se
 3. Extract the folder
 4. Run `Temp Desktop.exe` and the Temp Desktop icon will appear in your system tray
 5. Right click the icon in the tray to open the menu
-6. Press `Change Desktop Folder` and select the folder you'd like to use. Consider adding a shortcut to `Temp Desktop.exe` in the folder you'll be using as your desktop to make it more convenient to switch back.
+6. Press `Change Desktop Folder` and select the folder you'd like to use.
 7. When you're done working in the temporary desktop folder, choose `Reset Desktop Folder` or simply click `Exit` with the "Reset desktop on app close" option enabled (it is by default).
 
 ### Notes
