@@ -16,4 +16,4 @@ It lives in the system tray and works by simply editing the Registry key that se
 
 ### Notes
 - If hide shortcuts is enabled in options, public desktop shortcuts will be moved from C:\Users\Public\Desktop to C:\Users\Public\Desktop_backup. This keeps them from showing on the new desktop screen, they are moved back to the appropriate folder when the desktop is reset either by pressing the button or closing the application with the reset on close option enabled.
-- The program requires admin access due to the above note, since adding files to C:\Users\Public\Desktop requires elevated priveledges.
+- The program requires admin access only if hide shortcuts is enabled, since adding files to C:\Users\Public\Desktop requires elevated priveledges.
