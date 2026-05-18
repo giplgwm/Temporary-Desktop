@@ -1,10 +1,11 @@
+using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Text;
 
 namespace Temp_Desktop
 {
@@ -111,8 +112,15 @@ namespace Temp_Desktop
             resetOnCloseItem.ToolTipText = "Should the desktop be reset when the program is closed? Default is yes to prevent users forgetting to switch back to the default and having issues.";
             resetOnCloseItem.CheckedChanged += resetExit_CheckedChanged;
 
+            ToolStripMenuItem launchOnStartupItem = new ToolStripMenuItem("Launch program on startup");
+            launchOnStartupItem.CheckOnClick = true;
+            launchOnStartupItem.Checked = IsLaunchOnStartupEnabled();
+            launchOnStartupItem.CheckedChanged += LaunchOnStartupCheckedChanged;
+
+
             optionsMenu.DropDownItems.Add(hideShortcutsItem);
             optionsMenu.DropDownItems.Add(resetOnCloseItem);
+            optionsMenu.DropDownItems.Add(launchOnStartupItem);
             menu.Items.Add(optionsMenu);
 
 
@@ -291,6 +299,36 @@ namespace Temp_Desktop
             };
             Process.Start(psi);
             Environment.Exit(0);
+        }
+
+        private const string AppName = "Temp Desktop.exe"; // change to your app name
+        private const string RunKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+
+        private static bool IsLaunchOnStartupEnabled()
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(RunKey, false);
+            return key?.GetValue(AppName) != null;
+        }
+
+        private static void SetLaunchOnStartupEnabled(bool enable)
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(RunKey, true);
+            if (enable)
+                key.SetValue(AppName, $"\"{Environment.ProcessPath}\"");
+            else
+                key.DeleteValue(AppName, false);
+        }
+
+        private static void LaunchOnStartupCheckedChanged(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            if (item.Checked)
+            {
+                SetLaunchOnStartupEnabled(true);
+            } else
+            {
+                SetLaunchOnStartupEnabled(false);
+            }
         }
     }
 }
