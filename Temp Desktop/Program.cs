@@ -11,14 +11,16 @@ namespace Temp_Desktop
 {
     internal static class Program
     {
-
+        private const string AppName = "Temp Desktop.exe";
+        private const string RunKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+        private const string IconLayoutKey = @"SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop";
         static string originaldesktop;
         static string currentdesktop;
         static ToolStripLabel currentdesktoplabel;
         static bool hideShortcuts;
         static bool resetOnExit = true;
         static NotifyIcon trayicon;
-        static string registrySaveLocation = "SOFTWARE\\gip\\TempDesktop";
+        static string registrySaveLocation = @"SOFTWARE\gip\TempDesktop";
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
@@ -52,7 +54,7 @@ namespace Temp_Desktop
                     }
                     else
                     {
-                        using (RegistryKey key2 = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", true))
+                        using (RegistryKey key2 = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", false))
                         {
                             originaldesktop = key2.GetValue("Desktop").ToString();
                         }
@@ -62,7 +64,7 @@ namespace Temp_Desktop
             } else
             {
                 Trace.WriteLine("Loaded default windows location");
-                using (RegistryKey key2 = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", true))
+                using (RegistryKey key2 = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", false))
                 {
                     originaldesktop = key2.GetValue("Desktop").ToString();
                 }
@@ -157,12 +159,17 @@ namespace Temp_Desktop
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
+                StoreIconLayout();
                 SetDesktopRegKey(dialog.FileName);
                 if (hideShortcuts)
                 {
                     removeShortcuts();
                 }
                 refreshDesktop();
+                if (!hideShortcuts)
+                {
+                    RestoreIconLayout();
+                }
             }
         }
 
@@ -209,6 +216,7 @@ namespace Temp_Desktop
             currentdesktoplabel.Text = "Current Desktop: " + originaldesktop;
             returnShortcuts();
             refreshDesktop();
+            RestoreIconLayout();
         }
 
         private static void exitClicked(object sender, EventArgs e)
@@ -301,9 +309,6 @@ namespace Temp_Desktop
             Environment.Exit(0);
         }
 
-        private const string AppName = "Temp Desktop.exe"; // change to your app name
-        private const string RunKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
-
         private static bool IsLaunchOnStartupEnabled()
         {
             using var key = Registry.CurrentUser.OpenSubKey(RunKey, false);
@@ -329,6 +334,23 @@ namespace Temp_Desktop
             {
                 SetLaunchOnStartupEnabled(false);
             }
+        }
+
+        private static void StoreIconLayout()
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(IconLayoutKey, false);
+            using var key2 = Registry.CurrentUser.OpenSubKey(registrySaveLocation, true);
+            Console.WriteLine("Storing Layouts:");
+            Console.WriteLine(key.GetValue("IconLayouts").ToString());
+            key2.SetValue("IconLayouts", key.GetValue("IconLayouts") ?? 0);
+        }
+
+        private static void RestoreIconLayout()
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(IconLayoutKey, true);
+            using var key2 = Registry.CurrentUser.OpenSubKey(registrySaveLocation, false);
+            Console.WriteLine("Restoring Layouts...:");
+            key.SetValue("IconLayouts", key2.GetValue("IconLayouts") ?? 0);
         }
     }
 }
